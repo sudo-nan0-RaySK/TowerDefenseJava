@@ -41,9 +41,6 @@ public class WaveFileReader {
     }
 
     public boolean hasNext(){
-        if (reachedEnd){
-            return false;
-        }
-        return true;
+        return !reachedEnd;
     }
 }

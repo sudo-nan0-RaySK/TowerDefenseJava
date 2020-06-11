@@ -96,6 +96,19 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    private void handleKeyPressEvent(Input input){
+        // Handle key presses
+        if (input.wasPressed(Keys.S)) {
+            waveStarted = true;
+        }
+        if (input.wasPressed(Keys.L)) {
+            increaseTimescale();
+        }
+        if (input.wasPressed(Keys.K)) {
+            decreaseTimescale();
+        }
+    }
+
     /**
      * Update the state of the game, potentially reading from input
      *
@@ -109,21 +122,12 @@ public class ShadowDefend extends AbstractGame {
         // Draw map from the top left of the window
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
 
-        // Handle key presses
-        if (input.wasPressed(Keys.S)) {
-            waveStarted = true;
-        }
-
-        if (input.wasPressed(Keys.L)) {
-            increaseTimescale();
-        }
-
-        if (input.wasPressed(Keys.K)) {
-            decreaseTimescale();
-        }
+        // Handle key input events
+        handleKeyPressEvent(input);
 
         // Check if it is time to spawn a new slicer (and we have some left to spawn)
         if (waveStarted && frameCount / FPS >= SPAWN_DELAY && spawnedSlicers != MAX_SLICERS) {
+            // TODO: Remove DEBUG Code
             if(waveFlag == 1){
                 slicers.add(new RegularSlicer(polyline));
             } else {
