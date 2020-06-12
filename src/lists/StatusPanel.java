@@ -16,35 +16,35 @@ public class StatusPanel {
         globalFont = new Font(DEJA_VU_SANS_BOLD,18);
     }
 
-    public void draw(){
+    public void draw(int waveCount, double timeScale, String gameStatus, int livesLeft){
         drawBackground();
-        drawWaveCount();
-        drawTimeScale();
-        drawGameStatus();
-        drawLivesCount();
+        drawWaveCount(waveCount);
+        drawTimeScale(timeScale);
+        drawGameStatus(gameStatus);
+        drawLivesCount(livesLeft);
     }
 
     private void drawBackground(){
         background.drawFromTopLeft(0.0,758.0,new DrawOptions().setScale(2.0,3.0));
     }
 
-    private void drawWaveCount(){
-        globalFont.drawString("Wave: 10",18.0,759.0,
+    private void drawWaveCount(int waveCount){
+        globalFont.drawString("Wave: "+waveCount,18.0,759.0,
                 new DrawOptions().setBlendColour(Colour.WHITE));
     }
 
-    private void drawTimeScale(){
-        globalFont.drawString("Time Scale: 1.0",138.0,759.0,
+    private void drawTimeScale(double timeScale){
+        globalFont.drawString("Time Scale: "+timeScale,138.0,759.0,
                 new DrawOptions().setBlendColour(Colour.WHITE));
     }
 
-    private void drawGameStatus(){
-        globalFont.drawString("Status: Wave in progress",358.0,759.0,
+    private void drawGameStatus(String gameState){
+        globalFont.drawString("Status: "+gameState,358.0,759.0,
                 new DrawOptions().setBlendColour(Colour.WHITE));
     }
 
-    private void drawLivesCount(){
-        globalFont.drawString("Lives: 25",899.0,759.0,
+    private void drawLivesCount(int livesLeft){
+        globalFont.drawString("Lives: "+livesLeft,899.0,759.0,
                 new DrawOptions().setBlendColour(Colour.WHITE));
     }
 }

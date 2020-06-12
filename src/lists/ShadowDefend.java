@@ -39,6 +39,10 @@ public class ShadowDefend extends AbstractGame {
     private final List<ApexSlicer> apexSlicers;
     private final WaveFileReader waveFileReader;
     private  Iterator<String[]> currentWaveEvent;
+    private int money;
+    private int livesLeft;
+    private String gameStatus;
+    private int waveCount;
     private double frameCount;
     private boolean waveStarted;
     private boolean waveGoing;
@@ -64,6 +68,12 @@ public class ShadowDefend extends AbstractGame {
         this.waveStarted = false;
         this.waveGoing = false;
         this.spawnEventGoing = false;
+        // Award $500 to player at the start of the game
+        this.money = 500;
+        // Award 25 lives at start
+        this.livesLeft = 25;
+        this.gameStatus = "Awaiting Start";
+        this.waveCount = 0;
         this.frameCount = Integer.MAX_VALUE;
         // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
         // This fix is entirely optional
@@ -96,6 +106,14 @@ public class ShadowDefend extends AbstractGame {
     private void decreaseTimescale() {
         if (timescale > INTIAL_TIMESCALE) {
             timescale--;
+        }
+    }
+
+    private String getGameStatus(){
+        if(waveGoing || !allSlicerListAreEmpty()){
+            return "Wave in Progress";
+        } else {
+            return "Awaiting Start";
         }
     }
 
@@ -171,10 +189,15 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
-    void drawScene(){
+    void drawScene(int currentMoney, int waveCount,
+                   double timeScale, String gameStatus, int livesLeft){
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
-        buyPanel.draw();
-        statusPanel.draw();
+        buyPanel.draw(currentMoney);
+        statusPanel.draw(waveCount,timeScale,gameStatus,livesLeft);
+    }
+
+    void updateMoney(){
+        money += 150 + (waveCount*100);
     }
 
     /**
@@ -186,13 +209,10 @@ public class ShadowDefend extends AbstractGame {
     protected void update(Input input) {
         // Increase the frame counter by the current timescale
         frameCount += getTimescale();
-
         // Draw map from the top left of the window
-        drawScene();
-
+        drawScene(money,waveCount,getTimescale(),getGameStatus(),livesLeft);
         // Handle key input events
         handleKeyPressEvent(input);
-
         // Check if it is time to spawn a new slicer (and we have some left to spawn)
         if (waveStarted && frameCount / FPS >= spawnDelay) {
             if(!spawnEventGoing){
@@ -200,6 +220,10 @@ public class ShadowDefend extends AbstractGame {
                     executeWaveEvent(currentWaveEvent.next());
                 }
                 else if(waveFileReader.hasNext()){
+                    // Update money since we survived a wave
+                    updateMoney();
+                    ++waveCount;
+                    waveGoing = true;
                     currentWaveEvent = waveFileReader.next().iterator();
                     String[] dataLine = currentWaveEvent.next();
                     executeWaveEvent(dataLine);
