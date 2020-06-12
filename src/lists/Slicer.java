@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class Slicer extends Sprite {
 
-    private static String IMAGE_FILE;
     private static double speed;
     private final List<Point> polyline;
     private int targetPointIndex;

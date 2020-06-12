@@ -30,6 +30,8 @@ public class ShadowDefend extends AbstractGame {
     // says everything in the game is affected by this
     private static int timescale = INTIAL_TIMESCALE;
     private final TiledMap map;
+    private final BuyPanel buyPanel;
+    private final StatusPanel statusPanel;
     private final List<Point> polyline;
     private final List<RegularSlicer> slicers;
     private final List<SuperSlicer> superSlicers;
@@ -51,6 +53,8 @@ public class ShadowDefend extends AbstractGame {
     public ShadowDefend() throws Exception{
         super(WIDTH, HEIGHT, "ShadowDefend");
         this.map = new TiledMap(MAP_FILE);
+        this.buyPanel = new BuyPanel();
+        this.statusPanel =  new StatusPanel();
         this.polyline = map.getAllPolylines().get(0);
         this.slicers = new ArrayList<>();
         this.superSlicers = new ArrayList<>();
@@ -167,6 +171,12 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    void drawScene(){
+        map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
+        buyPanel.draw();
+        statusPanel.draw();
+    }
+
     /**
      * Update the state of the game, potentially reading from input
      *
@@ -178,7 +188,7 @@ public class ShadowDefend extends AbstractGame {
         frameCount += getTimescale();
 
         // Draw map from the top left of the window
-        map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
+        drawScene();
 
         // Handle key input events
         handleKeyPressEvent(input);

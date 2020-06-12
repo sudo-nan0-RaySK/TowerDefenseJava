@@ -1,0 +1,5 @@
+c76da4e (HEAD -> master, origin/master) feat: Load level from wave file
+28aabc7 update: Read waves from file
+c5e619d clean: Code cleanups and modularizations from game loop
+3ebf65e feat: Added reader/parser for handling waves.txt
+bb2af66 feat: Added multiple Slicers
