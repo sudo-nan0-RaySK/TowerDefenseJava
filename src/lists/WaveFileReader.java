@@ -11,7 +11,7 @@ public class WaveFileReader {
     public final String levelsFile = "res/levels/waves.txt";
     public HashMap<Integer,ArrayList<String>> waveMap;
     public boolean reachedEnd = false;
-    public int iterator = 0;
+    public int iterator = 1;
 
     public WaveFileReader()throws  Exception{
         this.waveMap = new HashMap<Integer, ArrayList<String>>();

@@ -7,6 +7,8 @@ import bagel.Window;
 import bagel.map.TiledMap;
 import bagel.util.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public class ShadowDefend extends AbstractGame {
     // dynamically determined but that is out of scope.
     public static final double FPS = 60;
     // The spawn delay (in seconds) to spawn slicers
-    private static final int SPAWN_DELAY = 5;
+    private static double spawnDelay = 5.0;
     private static final int INTIAL_TIMESCALE = 1;
     private static final int MAX_SLICERS = 5;
     // Timescale is made static because it is a universal property of the game and the specification
@@ -33,15 +35,20 @@ public class ShadowDefend extends AbstractGame {
     private final List<SuperSlicer> superSlicers;
     private final List<MegaSlicer> megaSlicers;
     private final List<ApexSlicer> apexSlicers;
+    private final WaveFileReader waveFileReader;
+    private  Iterator<String[]> currentWaveEvent;
     private double frameCount;
-    private int spawnedSlicers;
     private boolean waveStarted;
+    private boolean waveGoing;
+    private boolean spawnEventGoing;
+    private int spawnEventCounter;
+    private String slicerToSpawn;
     private int waveFlag = 0;
 
     /**
      * Creates a new instance of the ShadowDefend game
      */
-    public ShadowDefend() {
+    public ShadowDefend() throws Exception{
         super(WIDTH, HEIGHT, "ShadowDefend");
         this.map = new TiledMap(MAP_FILE);
         this.polyline = map.getAllPolylines().get(0);
@@ -49,8 +56,10 @@ public class ShadowDefend extends AbstractGame {
         this.superSlicers = new ArrayList<>();
         this.megaSlicers = new ArrayList<>();
         this.apexSlicers =  new ArrayList<>();
-        this.spawnedSlicers = 0;
+        this.waveFileReader = new WaveFileReader();
         this.waveStarted = false;
+        this.waveGoing = false;
+        this.spawnEventGoing = false;
         this.frameCount = Integer.MAX_VALUE;
         // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
         // This fix is entirely optional
@@ -62,7 +71,7 @@ public class ShadowDefend extends AbstractGame {
      *
      * @param args Optional command-line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         new ShadowDefend().run();
     }
 
@@ -109,6 +118,36 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    void updateSlicers(Input input){
+        updateSlicerList(slicers,input);
+        updateSlicerList(superSlicers,input);
+        updateSlicerList(megaSlicers,input);
+        updateSlicerList(apexSlicers,input);
+    }
+
+    boolean allSlicerListAreEmpty(){
+        return slicers.isEmpty()
+                && superSlicers.isEmpty()
+                && megaSlicers.isEmpty()
+                && apexSlicers.isEmpty();
+    }
+
+    void spawnSlicer(String type){
+        switch (type){
+            case "slicer":
+                slicers.add(new RegularSlicer(polyline));
+                break;
+            case "superslicer":
+                superSlicers.add(new SuperSlicer(polyline));
+                break;
+            case "megaslicer":
+                megaSlicers.add(new MegaSlicer(polyline));
+                break;
+            default:
+                apexSlicers.add(new ApexSlicer(polyline));
+        }
+    }
+
     /**
      * Update the state of the game, potentially reading from input
      *
@@ -126,26 +165,45 @@ public class ShadowDefend extends AbstractGame {
         handleKeyPressEvent(input);
 
         // Check if it is time to spawn a new slicer (and we have some left to spawn)
-        if (waveStarted && frameCount / FPS >= SPAWN_DELAY && spawnedSlicers != MAX_SLICERS) {
-            // TODO: Remove DEBUG Code
-            if(waveFlag == 1){
-                slicers.add(new RegularSlicer(polyline));
+        if (waveStarted && frameCount / FPS >= spawnDelay) {
+            // TODO: Handle SPAWN and DELAY events properly
+            if(!spawnEventGoing){
+                if(waveFileReader.hasNext()){
+                    currentWaveEvent = waveFileReader.next().iterator();
+                    String[] dataLine = currentWaveEvent.next();
+                    System.out.println("EXECUTING"+Arrays.toString(dataLine));
+                    if(dataLine[1].equals("spawn")){
+                        spawnEventGoing = true;
+                        slicerToSpawn = dataLine[3];
+                        spawnEventCounter = Integer.parseInt(dataLine[2]);
+                        spawnDelay = Double.parseDouble(dataLine[4])/1000.0;
+                        // Spawn one of them immediately
+                        spawnSlicer(slicerToSpawn);
+                        frameCount = 0;
+                        --spawnEventCounter;
+                        if(spawnEventCounter==0){
+                            spawnEventGoing = false;
+                        }
+                    } else {
+                        spawnDelay = Double.parseDouble(dataLine[2])/1000.0;
+                    }
+                } else {
+                    waveGoing = false;
+                }
             } else {
-                superSlicers.add(new SuperSlicer(polyline));
+                spawnSlicer(slicerToSpawn);
+                frameCount = 0;
+                --spawnEventCounter;
+                if(spawnEventCounter==0){
+                    spawnEventGoing = false;
+                }
             }
-            waveFlag ^= 1;
-            spawnedSlicers += 1;
-            // Reset frame counter
-            frameCount = 0;
         }
-
-        // Close game if all slicers have finished traversing the polyline
-        if (spawnedSlicers == MAX_SLICERS && slicers.isEmpty() && superSlicers.isEmpty()) {
+        // Close game if all slicers have finished traversing the polyline and all waves have finished
+        if (!waveFileReader.hasNext() && !waveGoing && allSlicerListAreEmpty()) {
             Window.close();
         }
-
         // Update all sprites, and remove them if they've finished
-        updateSlicerList(slicers,input);
-        updateSlicerList(superSlicers,input);
+        updateSlicers(input);
     }
 }
