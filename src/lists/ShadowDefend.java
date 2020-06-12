@@ -146,6 +146,25 @@ public class ShadowDefend extends AbstractGame {
             default:
                 apexSlicers.add(new ApexSlicer(polyline));
         }
+        frameCount = 0;
+        --spawnEventCounter;
+        if(spawnEventCounter==0){
+            spawnEventGoing = false;
+        }
+    }
+
+    void executeWaveEvent(String[] dataLine){
+        System.out.println("EXECUTING"+Arrays.toString(dataLine));
+        if(dataLine[1].equals("spawn")) {
+            spawnEventGoing = true;
+            slicerToSpawn = dataLine[3];
+            spawnEventCounter = Integer.parseInt(dataLine[2]);
+            spawnDelay = Double.parseDouble(dataLine[4]) / 1000.0;
+            // Spawn one of them immediately
+            spawnSlicer(slicerToSpawn);
+        } else {
+            spawnDelay = Double.parseDouble(dataLine[2])/1000.0;
+        }
     }
 
     /**
@@ -166,37 +185,19 @@ public class ShadowDefend extends AbstractGame {
 
         // Check if it is time to spawn a new slicer (and we have some left to spawn)
         if (waveStarted && frameCount / FPS >= spawnDelay) {
-            // TODO: Handle SPAWN and DELAY events properly
             if(!spawnEventGoing){
-                if(waveFileReader.hasNext()){
+                if(currentWaveEvent!=null && currentWaveEvent.hasNext()){
+                    executeWaveEvent(currentWaveEvent.next());
+                }
+                else if(waveFileReader.hasNext()){
                     currentWaveEvent = waveFileReader.next().iterator();
                     String[] dataLine = currentWaveEvent.next();
-                    System.out.println("EXECUTING"+Arrays.toString(dataLine));
-                    if(dataLine[1].equals("spawn")){
-                        spawnEventGoing = true;
-                        slicerToSpawn = dataLine[3];
-                        spawnEventCounter = Integer.parseInt(dataLine[2]);
-                        spawnDelay = Double.parseDouble(dataLine[4])/1000.0;
-                        // Spawn one of them immediately
-                        spawnSlicer(slicerToSpawn);
-                        frameCount = 0;
-                        --spawnEventCounter;
-                        if(spawnEventCounter==0){
-                            spawnEventGoing = false;
-                        }
-                    } else {
-                        spawnDelay = Double.parseDouble(dataLine[2])/1000.0;
-                    }
+                    executeWaveEvent(dataLine);
                 } else {
                     waveGoing = false;
                 }
             } else {
                 spawnSlicer(slicerToSpawn);
-                frameCount = 0;
-                --spawnEventCounter;
-                if(spawnEventCounter==0){
-                    spawnEventGoing = false;
-                }
             }
         }
         // Close game if all slicers have finished traversing the polyline and all waves have finished
