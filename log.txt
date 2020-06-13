@@ -1,4 +1,6 @@
-66cf2d3 (HEAD -> master, origin/master, origin/HEAD) fix: Made UI Functional
+adff0d2 (HEAD -> master, origin/master) fix: Drag and place edge cases fixed
+a74faab feat: Added item drag and place logic
+66cf2d3 fix: Made UI Functional
 95c4100 update: Shifted dev platform to macOS
 8763773 feat: Completed a non functional UI/Placeholders
 c76da4e feat: Load level from wave file

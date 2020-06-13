@@ -36,8 +36,9 @@ public class StatusPanel {
     }
 
     private void drawTimeScale(double timeScale){
+        Colour color = timeScale>1.0?Colour.GREEN:Colour.WHITE;
         globalFont.drawString("Time Scale: "+timeScale,138.0,759.0,
-                new DrawOptions().setBlendColour(Colour.WHITE));
+                new DrawOptions().setBlendColour(color));
     }
 
     private void drawGameStatus(String gameState){
