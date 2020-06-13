@@ -27,11 +27,18 @@ public class TankProjectile extends Sprite {
         Point spriteCenter = this.getCenter();
         return (Math.pow(spriteCenter.x-source.x,2.0))
                 + (Math.pow(spriteCenter.y-source.y,2.0))
-                > Math.pow(effectRadius,2.0);
+                >= Math.pow(effectRadius,2.0);
+    }
+
+    public boolean isFinished(){
+        return finished;
     }
 
     @Override
     public void update(Input input){
+        if(isFinished()){
+            return;
+        }
         if(isOutOfRange()){
             finished = true;
             return;
@@ -41,6 +48,10 @@ public class TankProjectile extends Sprite {
         Vector2 targetVector = target.asVector();
 
         Vector2 displacement = targetVector.sub(currentVector);
+        if(displacement.length() < speed*ShadowDefend.getTimescale()){
+            finished = true;
+            return;
+        }
         super.move(displacement.normalised().mul(speed*ShadowDefend.getTimescale()));
         super.setAngle(Math.atan2(target.y-currentPoint.y,target.x-targetVector.x));
         super.update(input);

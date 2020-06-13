@@ -11,16 +11,16 @@ import java.util.Random;
 public class Tank extends Sprite {
 
     private static final String TANK_IMAGE = "res/images/tank.png";
-    private final double COOL_DOWN_PERIOD = 1.0;
-    private boolean coolDown;
+    private final long COOL_DOWN_PERIOD = 1000;
     private final int DAMAGE = 1;
     private final double EFFECT_RADIUS = 100;
+    private long lastFire;
     private Slicer lockedTarget;
 
     public  Tank(Point p){
         super(p,TANK_IMAGE);
         this.lockedTarget = null;
-        this.coolDown = false;
+        this.lastFire = Long.MAX_VALUE;
     }
 
     /** Equation for the circle
@@ -31,10 +31,6 @@ public class Tank extends Sprite {
         return (Math.pow(spriteCenter.x-p.x,2.0))
         + (Math.pow(spriteCenter.y-p.y,2.0))
         <= Math.pow(EFFECT_RADIUS,2.0);
-    }
-
-    public boolean isInCoolDown(){
-        return coolDown;
     }
 
     public void seekTargets(List<List<? extends Slicer>> slicerLists){
@@ -51,7 +47,6 @@ public class Tank extends Sprite {
         }
         int randomIndex = new Random().nextInt(slicersInRange.size());
         lockedTarget = slicersInRange.get(randomIndex);
-        System.out.println(lockedTarget);
     }
 
     public void update(Input input,List<List<? extends Slicer>> slicerLists){
@@ -61,6 +56,11 @@ public class Tank extends Sprite {
                 Point current = this.getCenter();
                 Point target = lockedTarget.getCenter();
                 super.setAngle(Math.atan2(target.y-current.y,target.x-current.x));
+                // Launch the projectile
+                if(lastFire==Long.MAX_VALUE || System.currentTimeMillis()-lastFire >= COOL_DOWN_PERIOD){
+                    ShadowDefend.getTankProjeciles().add(new TankProjectile(current,target,EFFECT_RADIUS,1.0));
+                    lastFire = System.currentTimeMillis();
+                }
             }
         }
         super.update(input);

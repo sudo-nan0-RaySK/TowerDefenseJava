@@ -47,7 +47,7 @@ public class ShadowDefend extends AbstractGame {
     private int livesLeft;
     private boolean placing;
     private int waveCount;
-    private double frameCount;
+    private static double frameCount;
     private boolean waveStarted;
     private boolean waveGoing;
     private boolean spawnEventGoing;
@@ -100,6 +100,14 @@ public class ShadowDefend extends AbstractGame {
         return timescale;
     }
 
+    public static double getFrameCount(){
+        return frameCount;
+    }
+
+    public static List<TankProjectile> getTankProjeciles(){
+        return tankProjectiles;
+    }
+
     /**
      * Increases the timescale
      */
@@ -146,6 +154,17 @@ public class ShadowDefend extends AbstractGame {
                 = Arrays.asList(slicers, superSlicers, megaSlicers, apexSlicers);
         for(Tank tank : tanks){
             tank.update(input,slicersList);
+        }
+    }
+
+    private void updateTankProjectiles(Input input){
+        for(int i = ShadowDefend.getTankProjectiles().size()-1; i>=0; --i){
+            TankProjectile projectile = ShadowDefend.getTankProjectiles().get(i);
+            projectile.update(input);
+            if(projectile.isFinished()){
+                System.out.println("Deleted Projectile");
+                ShadowDefend.getTankProjeciles().remove(projectile);
+            }
         }
     }
 
@@ -214,6 +233,7 @@ public class ShadowDefend extends AbstractGame {
     void updateSprites(Input input){
         updateSlicers(input);
         updateTowers(input);
+        updateTankProjectiles(input);
     }
 
     boolean allSlicerListAreEmpty(){
