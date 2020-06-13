@@ -7,6 +7,7 @@ import bagel.util.Vector2;
 public class TankProjectile extends Sprite {
 
     private static final String TANK_PROJECTILE_IMAGE = "res/images/tank_projectile.png";
+    private static final int DAMAGE = 1;
     private boolean finished;
     private final Point source;
     private final Point target;
@@ -32,6 +33,10 @@ public class TankProjectile extends Sprite {
 
     public boolean isFinished(){
         return finished;
+    }
+
+    public int getDamage(){
+        return DAMAGE;
     }
 
     @Override

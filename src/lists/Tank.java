@@ -50,7 +50,7 @@ public class Tank extends Sprite {
     }
 
     public void update(Input input,List<List<? extends Slicer>> slicerLists){
-        if(lockedTarget==null || !isInRange(lockedTarget.getCenter())){
+        if(lockedTarget==null || lockedTarget.isFinished() || !isInRange(lockedTarget.getCenter())){
             seekTargets(slicerLists);
             if(lockedTarget!=null && isInRange(lockedTarget.getCenter())){
                 Point current = this.getCenter();

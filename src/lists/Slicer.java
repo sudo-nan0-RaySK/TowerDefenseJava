@@ -69,4 +69,8 @@ public class Slicer extends Sprite {
     public boolean isFinished() {
         return finished;
     }
+
+    public void setFinished(boolean val){
+        this.finished = val;
+    }
 }

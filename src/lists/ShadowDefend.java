@@ -43,7 +43,7 @@ public class ShadowDefend extends AbstractGame {
     private static List<TankProjectile> tankProjectiles;
     private final WaveFileReader waveFileReader;
     private  Iterator<String[]> currentWaveEvent;
-    private int money;
+    private static int money;
     private int livesLeft;
     private boolean placing;
     private int waveCount;
@@ -98,6 +98,10 @@ public class ShadowDefend extends AbstractGame {
 
     public static int getTimescale() {
         return timescale;
+    }
+
+    public static void addMoney(int amount){
+        money += amount;
     }
 
     public static double getFrameCount(){
