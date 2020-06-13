@@ -3,7 +3,7 @@ package lists;
 import bagel.*;
 import bagel.map.TiledMap;
 import bagel.util.Point;
-import org.lwjgl.system.CallbackI;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +40,7 @@ public class ShadowDefend extends AbstractGame {
     private final List<MegaSlicer> megaSlicers;
     private final List<ApexSlicer> apexSlicers;
     private final List<Tank> tanks;
+    private static List<TankProjectile> tankProjectiles;
     private final WaveFileReader waveFileReader;
     private  Iterator<String[]> currentWaveEvent;
     private int money;
@@ -68,6 +69,7 @@ public class ShadowDefend extends AbstractGame {
         this.superSlicers = new ArrayList<>();
         this.megaSlicers = new ArrayList<>();
         this.apexSlicers =  new ArrayList<>();
+        this.tankProjectiles =  new ArrayList<>();
         this.tanks =  new ArrayList<>();
         this.waveFileReader = new WaveFileReader();
         this.waveStarted = false;
@@ -112,6 +114,10 @@ public class ShadowDefend extends AbstractGame {
         if (timescale > INTIAL_TIMESCALE) {
             timescale--;
         }
+    }
+
+    private static List<TankProjectile> getTankProjectiles(){
+        return tankProjectiles;
     }
 
     private String getGameStatus(){

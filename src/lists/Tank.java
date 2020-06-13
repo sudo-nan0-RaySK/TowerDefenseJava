@@ -57,6 +57,11 @@ public class Tank extends Sprite {
     public void update(Input input,List<List<? extends Slicer>> slicerLists){
         if(lockedTarget==null || !isInRange(lockedTarget.getCenter())){
             seekTargets(slicerLists);
+            if(lockedTarget!=null && isInRange(lockedTarget.getCenter())){
+                Point current = this.getCenter();
+                Point target = lockedTarget.getCenter();
+                super.setAngle(Math.atan2(target.y-current.y,target.x-current.x));
+            }
         }
         super.update(input);
     }

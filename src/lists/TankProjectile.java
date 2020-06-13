@@ -2,6 +2,7 @@ package lists;
 
 import bagel.Input;
 import bagel.util.Point;
+import bagel.util.Vector2;
 
 public class TankProjectile extends Sprite {
 
@@ -35,6 +36,13 @@ public class TankProjectile extends Sprite {
             finished = true;
             return;
         }
+        Point currentPoint = this.getCenter();
+        Vector2 currentVector = currentPoint.asVector();
+        Vector2 targetVector = target.asVector();
+
+        Vector2 displacement = targetVector.sub(currentVector);
+        super.move(displacement.normalised().mul(speed*ShadowDefend.getTimescale()));
+        super.setAngle(Math.atan2(target.y-currentPoint.y,target.x-targetVector.x));
         super.update(input);
     }
 }
