@@ -62,7 +62,7 @@ public class Slicer extends Sprite {
         // by the speed of the slicer (accounting for the timescale)
         super.move(distance.normalised().mul(speed * ShadowDefend.getTimescale()));
         // Update current rotation angle to face target point
-        setAngle(Math.atan2(targetPoint.y - currentPoint.y, targetPoint.x - currentPoint.x));
+        super.setAngle(Math.atan2(targetPoint.y - currentPoint.y, targetPoint.x - currentPoint.x));
         super.update(input);
     }
 

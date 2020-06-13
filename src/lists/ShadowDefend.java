@@ -3,6 +3,8 @@ package lists;
 import bagel.*;
 import bagel.map.TiledMap;
 import bagel.util.Point;
+import org.lwjgl.system.CallbackI;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -37,6 +39,7 @@ public class ShadowDefend extends AbstractGame {
     private final List<SuperSlicer> superSlicers;
     private final List<MegaSlicer> megaSlicers;
     private final List<ApexSlicer> apexSlicers;
+    private final List<Tank> tanks;
     private final WaveFileReader waveFileReader;
     private  Iterator<String[]> currentWaveEvent;
     private int money;
@@ -65,6 +68,7 @@ public class ShadowDefend extends AbstractGame {
         this.superSlicers = new ArrayList<>();
         this.megaSlicers = new ArrayList<>();
         this.apexSlicers =  new ArrayList<>();
+        this.tanks =  new ArrayList<>();
         this.waveFileReader = new WaveFileReader();
         this.waveStarted = false;
         this.waveGoing = false;
@@ -131,6 +135,12 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    private void updateTankList(List<Tank> tanks, Input input){
+        for(Tank tank : tanks){
+            tank.update(input);
+        }
+    }
+
     private void handleKeyPressEvent(Input input){
         // Handle key presses
         if (input.wasPressed(Keys.S)) {
@@ -144,19 +154,37 @@ public class ShadowDefend extends AbstractGame {
         }
         // Handle mouse button presses
         if (input.wasPressed(MouseButtons.LEFT)){
-            Point mousePos = input.getMousePosition();
-            if(buyPanel.clickedOnTank(mousePos)
-                    && buyPanel.isPurchasable("Tank",money)){
-                towerSelected = "Tank";
-                placing = true;
-            } else if (buyPanel.clickedOnSuperTank(mousePos)
-                    && buyPanel.isPurchasable("SuperTank",money)){
-                towerSelected = "SuperTank";
-                placing = true;
-            } else if (buyPanel.clickedOnAirSupport(mousePos) &&
-                    buyPanel.isPurchasable("AirSupport",money)){
-                towerSelected = "AirSupport";
-                placing = true;
+            if(placing){
+                if(canPlaceTower(input)){
+                    switch (towerSelected){
+                        case "Tank":
+                            tanks.add(new Tank(input.getMousePosition()));
+                            money -= buyPanel.getTankPrice();
+                            placing = false;
+                            break;
+                        case "Super":
+                            // TODO: SuperTank placement
+                            break;
+                        default:
+                            // TODO: AirSupport placement
+                            break;
+                    }
+                }
+            } else {
+                Point mousePos = input.getMousePosition();
+                if(buyPanel.clickedOnTank(mousePos)
+                        && buyPanel.isPurchasable("Tank",money)){
+                    towerSelected = "Tank";
+                    placing = true;
+                } else if (buyPanel.clickedOnSuperTank(mousePos)
+                        && buyPanel.isPurchasable("SuperTank",money)){
+                    towerSelected = "SuperTank";
+                    placing = true;
+                } else if (buyPanel.clickedOnAirSupport(mousePos) &&
+                        buyPanel.isPurchasable("AirSupport",money)){
+                    towerSelected = "AirSupport";
+                    placing = true;
+                }
             }
         }
         if(input.wasPressed(MouseButtons.RIGHT) && placing){
@@ -169,6 +197,15 @@ public class ShadowDefend extends AbstractGame {
         updateSlicerList(superSlicers,input);
         updateSlicerList(megaSlicers,input);
         updateSlicerList(apexSlicers,input);
+    }
+
+    void updateTowers(Input input){
+        updateTankList(tanks,input);
+    }
+
+    void updateSprites(Input input){
+        updateSlicers(input);
+        updateTowers(input);
     }
 
     boolean allSlicerListAreEmpty(){
@@ -214,7 +251,15 @@ public class ShadowDefend extends AbstractGame {
     }
 
     boolean isSafeCoordinate(int x, int y){
-        return x>=0 && y>=0 && x<WIDTH && y<700;
+        return x>=80 && y>=130 && x<999 && y<700;
+    }
+    
+    boolean canPlaceTower(Input input){
+        double mouseX = input.getMouseX();
+        double mouseY = input.getMouseY();
+        return  isSafeCoordinate((int)mouseX,(int)mouseY)
+                && !buyPanel.isInsideBuyPanel(input.getMousePosition())
+                && !map.hasProperty((int)mouseX,(int)mouseY,"blocked");
     }
 
     void drawScene(Input input,int currentMoney, int waveCount,
@@ -228,9 +273,7 @@ public class ShadowDefend extends AbstractGame {
         double mouseY = input.getMouseY();
 
         if(gameStatus.equals("Placing")
-                && isSafeCoordinate((int)mouseX,(int)mouseY)
-                && !buyPanel.isInsideBuyPanel(input.getMousePosition())
-                && !map.hasProperty((int)mouseX,(int)mouseY,"blocked")){
+                && canPlaceTower(input)){
 
             if(towerSelected.equals("Tank")){
                 new Image(TANK_IMAGE).draw(mouseX,mouseY);
@@ -287,6 +330,7 @@ public class ShadowDefend extends AbstractGame {
             Window.close();
         }
         // Update all sprites, and remove them if they've finished
-        updateSlicers(input);
+        updateSprites(input);
+
     }
 }

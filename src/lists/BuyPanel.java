@@ -60,21 +60,21 @@ public class BuyPanel {
     private void drawTank(int currentMoney){
         Colour textColor = currentMoney>=250?Colour.GREEN:Colour.RED;
         tank.draw(64.0,45.0);
-        globalFont.drawString("$250",35.0,90.0,
+        globalFont.drawString("$"+getTankPrice(),35.0,90.0,
                 new DrawOptions().setBlendColour(textColor));
     }
 
     private void drawSuperTank(int currentMoney){
         Colour textColor = currentMoney>=600?Colour.GREEN:Colour.RED;
         superTank.draw(184.0,45.0);
-        globalFont.drawString("$600",155.0,90.0,
+        globalFont.drawString("$"+getSuperTankPrice(),155.0,90.0,
                 new DrawOptions().setBlendColour(textColor));
     }
 
     private void drawAirSupport(int currentMoney){
         Colour textColor = currentMoney>=500?Colour.GREEN:Colour.RED;
         airSupport.draw(304.0,45.0);
-        globalFont.drawString("$500",275.0,90.0,
+        globalFont.drawString("$"+getAirSupportPrice(),275.0,90.0,
                 new DrawOptions().setBlendColour(textColor));
     }
 
@@ -96,14 +96,26 @@ public class BuyPanel {
 
     public boolean isPurchasable(String towerType, int money){
         if(towerType.equals("Tank")){
-            return money>=250;
+            return money>=getTankPrice();
         }
         else if(towerType.equals("SuperTank")){
-            return money>=600;
+            return money>=getSuperTankPrice();
         }
         else{
-            return money>=500;
+            return money>=getAirSupportPrice();
         }
+    }
+
+    public int getTankPrice(){
+        return 250;
+    }
+
+    public int getSuperTankPrice(){
+        return 600;
+    }
+
+    public int getAirSupportPrice(){
+        return 500;
     }
 
 }
