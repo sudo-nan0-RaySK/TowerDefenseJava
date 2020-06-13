@@ -58,7 +58,8 @@ public class Tank extends Sprite {
                 super.setAngle(Math.atan2(target.y-current.y,target.x-current.x));
                 // Launch the projectile
                 if(lastFire==Long.MAX_VALUE || System.currentTimeMillis()-lastFire >= COOL_DOWN_PERIOD){
-                    ShadowDefend.getTankProjeciles().add(new TankProjectile(current,target,EFFECT_RADIUS,1.0));
+                    super.setAngle(Math.atan2(target.y-current.y,target.x-current.x));
+                    ShadowDefend.getTankProjectiles().add(new TankProjectile(current,target,EFFECT_RADIUS,1.0));
                     lastFire = System.currentTimeMillis();
                 }
             }

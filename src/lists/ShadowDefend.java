@@ -104,7 +104,7 @@ public class ShadowDefend extends AbstractGame {
         return frameCount;
     }
 
-    public static List<TankProjectile> getTankProjeciles(){
+    public static List<TankProjectile> getTankProjectiles(){
         return tankProjectiles;
     }
 
@@ -122,10 +122,6 @@ public class ShadowDefend extends AbstractGame {
         if (timescale > INTIAL_TIMESCALE) {
             timescale--;
         }
-    }
-
-    private static List<TankProjectile> getTankProjectiles(){
-        return tankProjectiles;
     }
 
     private String getGameStatus(){
@@ -163,7 +159,7 @@ public class ShadowDefend extends AbstractGame {
             projectile.update(input);
             if(projectile.isFinished()){
                 System.out.println("Deleted Projectile");
-                ShadowDefend.getTankProjeciles().remove(projectile);
+                ShadowDefend.getTankProjectiles().remove(projectile);
             }
         }
     }
