@@ -1,4 +1,7 @@
-adff0d2 (HEAD -> master, origin/master) fix: Drag and place edge cases fixed
+53a0d8e (HEAD -> master, origin/master) feat: Added target locking mechanism
+12ec81e feat: Tower deployment initials completed
+a9d36e1 fix: Render TimeScale green if > 1.0
+adff0d2 fix: Drag and place edge cases fixed
 a74faab feat: Added item drag and place logic
 66cf2d3 fix: Made UI Functional
 95c4100 update: Shifted dev platform to macOS
