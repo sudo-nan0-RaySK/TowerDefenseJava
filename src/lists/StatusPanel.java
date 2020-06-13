@@ -25,9 +25,6 @@ public class StatusPanel {
         drawLivesCount(livesLeft);
     }
 
-    public boolean isInsideStatusPanel(Point p){
-        return background.getBoundingBox().intersects(p);
-    }
 
     private void drawBackground(){
         background.drawFromTopLeft(0.0,758.0,new DrawOptions().setScale(2.0,3.0));

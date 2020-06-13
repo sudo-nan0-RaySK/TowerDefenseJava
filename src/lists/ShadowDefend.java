@@ -144,18 +144,19 @@ public class ShadowDefend extends AbstractGame {
         }
         // Handle mouse button presses
         if (input.wasPressed(MouseButtons.LEFT)){
-            placing = true;
-            System.out.println("Game Status: " +getGameStatus());
             Point mousePos = input.getMousePosition();
-            if(buyPanel.clickedOnTank(mousePos)){
-                System.out.println("SELECTED Tank");
+            if(buyPanel.clickedOnTank(mousePos)
+                    && buyPanel.isPurchasable("Tank",money)){
                 towerSelected = "Tank";
-            } else if (buyPanel.clickedOnSuperTank(mousePos)){
-                System.out.println("SELECTED SuperTank");
+                placing = true;
+            } else if (buyPanel.clickedOnSuperTank(mousePos)
+                    && buyPanel.isPurchasable("SuperTank",money)){
                 towerSelected = "SuperTank";
-            } else if (buyPanel.clickedOnAirSupport(mousePos)){
-                System.out.println("SELECTED AirSupport");
+                placing = true;
+            } else if (buyPanel.clickedOnAirSupport(mousePos) &&
+                    buyPanel.isPurchasable("AirSupport",money)){
                 towerSelected = "AirSupport";
+                placing = true;
             }
         }
         if(input.wasPressed(MouseButtons.RIGHT) && placing){
@@ -212,6 +213,10 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    boolean isSafeCoordinate(int x, int y){
+        return x>=0 && y>=0 && x<WIDTH && y<700;
+    }
+
     void drawScene(Input input,int currentMoney, int waveCount,
                    double timeScale, String gameStatus, int livesLeft){
 
@@ -222,7 +227,10 @@ public class ShadowDefend extends AbstractGame {
         double mouseX = input.getMouseX();
         double mouseY = input.getMouseY();
 
-        if(gameStatus.equals("Placing")){
+        if(gameStatus.equals("Placing")
+                && isSafeCoordinate((int)mouseX,(int)mouseY)
+                && !buyPanel.isInsideBuyPanel(input.getMousePosition())
+                && !map.hasProperty((int)mouseX,(int)mouseY,"blocked")){
 
             if(towerSelected.equals("Tank")){
                 new Image(TANK_IMAGE).draw(mouseX,mouseY);

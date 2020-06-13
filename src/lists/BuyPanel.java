@@ -45,6 +45,7 @@ public class BuyPanel {
     }
 
     public boolean clickedOnSuperTank(Point p){
+
         return superTank.getBoundingBoxAt(new Point(155.0,90.0)).intersects(p);
     }
 
@@ -71,7 +72,7 @@ public class BuyPanel {
     }
 
     private void drawAirSupport(int currentMoney){
-        Colour textColor = currentMoney>=250?Colour.GREEN:Colour.RED;
+        Colour textColor = currentMoney>=500?Colour.GREEN:Colour.RED;
         airSupport.draw(304.0,45.0);
         globalFont.drawString("$500",275.0,90.0,
                 new DrawOptions().setBlendColour(textColor));
@@ -91,6 +92,18 @@ public class BuyPanel {
         new Font(DEJA_VU_SANS_BOLD,50)
                 .drawString("$"+currentMoney,750,70,
                 new DrawOptions().setBlendColour(Colour.WHITE));
+    }
+
+    public boolean isPurchasable(String towerType, int money){
+        if(towerType.equals("Tank")){
+            return money>=250;
+        }
+        else if(towerType.equals("SuperTank")){
+            return money>=600;
+        }
+        else{
+            return money>=500;
+        }
     }
 
 }
