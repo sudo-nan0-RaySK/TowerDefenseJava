@@ -1,9 +1,6 @@
 package lists;
 
-import bagel.AbstractGame;
-import bagel.Input;
-import bagel.Keys;
-import bagel.Window;
+import bagel.*;
 import bagel.map.TiledMap;
 import bagel.util.Point;
 import java.util.ArrayList;
@@ -19,6 +16,9 @@ public class ShadowDefend extends AbstractGame {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 1024;
     private static final String MAP_FILE = "res/levels/1.tmx";
+    private static final String TANK_IMAGE = "res/images/tank.png";
+    private static final String SUPER_TANK = "res/images/supertank.png";
+    private static final String AIR_SUPPORT = "res/images/airsupport.png";
     // Change to suit system specifications. This could be
     // dynamically determined but that is out of scope.
     public static final double FPS = 60;
@@ -41,7 +41,7 @@ public class ShadowDefend extends AbstractGame {
     private  Iterator<String[]> currentWaveEvent;
     private int money;
     private int livesLeft;
-    private String gameStatus;
+    private boolean placing;
     private int waveCount;
     private double frameCount;
     private boolean waveStarted;
@@ -49,6 +49,7 @@ public class ShadowDefend extends AbstractGame {
     private boolean spawnEventGoing;
     private int spawnEventCounter;
     private String slicerToSpawn;
+    private String towerSelected;
     private int waveFlag = 0;
 
     /**
@@ -68,11 +69,11 @@ public class ShadowDefend extends AbstractGame {
         this.waveStarted = false;
         this.waveGoing = false;
         this.spawnEventGoing = false;
+        this.placing = false;
         // Award $500 to player at the start of the game
         this.money = 500;
         // Award 25 lives at start
         this.livesLeft = 25;
-        this.gameStatus = "Awaiting Start";
         this.waveCount = 0;
         this.frameCount = Integer.MAX_VALUE;
         // Temporary fix for the weird slicer map glitch (might have to do with caching textures)
@@ -110,7 +111,10 @@ public class ShadowDefend extends AbstractGame {
     }
 
     private String getGameStatus(){
-        if(waveGoing || !allSlicerListAreEmpty()){
+        if(placing){
+            return "Placing";
+        }
+        else if(waveGoing || !allSlicerListAreEmpty()){
             return "Wave in Progress";
         } else {
             return "Awaiting Start";
@@ -137,6 +141,25 @@ public class ShadowDefend extends AbstractGame {
         }
         if (input.wasPressed(Keys.K)) {
             decreaseTimescale();
+        }
+        // Handle mouse button presses
+        if (input.wasPressed(MouseButtons.LEFT)){
+            placing = true;
+            System.out.println("Game Status: " +getGameStatus());
+            Point mousePos = input.getMousePosition();
+            if(buyPanel.clickedOnTank(mousePos)){
+                System.out.println("SELECTED Tank");
+                towerSelected = "Tank";
+            } else if (buyPanel.clickedOnSuperTank(mousePos)){
+                System.out.println("SELECTED SuperTank");
+                towerSelected = "SuperTank";
+            } else if (buyPanel.clickedOnAirSupport(mousePos)){
+                System.out.println("SELECTED AirSupport");
+                towerSelected = "AirSupport";
+            }
+        }
+        if(input.wasPressed(MouseButtons.RIGHT) && placing){
+            placing = false;
         }
     }
 
@@ -189,11 +212,28 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
-    void drawScene(int currentMoney, int waveCount,
+    void drawScene(Input input,int currentMoney, int waveCount,
                    double timeScale, String gameStatus, int livesLeft){
+
         map.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         buyPanel.draw(currentMoney);
         statusPanel.draw(waveCount,timeScale,gameStatus,livesLeft);
+
+        double mouseX = input.getMouseX();
+        double mouseY = input.getMouseY();
+
+        if(gameStatus.equals("Placing")){
+
+            if(towerSelected.equals("Tank")){
+                new Image(TANK_IMAGE).draw(mouseX,mouseY);
+            }
+            else if (towerSelected.equals("SuperTank")){
+                new Image(SUPER_TANK).draw(mouseX,mouseY);
+            }
+            else {
+                new Image(AIR_SUPPORT).draw(mouseX,mouseY);
+            }
+        }
     }
 
     void updateMoney(){
@@ -209,10 +249,10 @@ public class ShadowDefend extends AbstractGame {
     protected void update(Input input) {
         // Increase the frame counter by the current timescale
         frameCount += getTimescale();
-        // Draw map from the top left of the window
-        drawScene(money,waveCount,getTimescale(),getGameStatus(),livesLeft);
         // Handle key input events
         handleKeyPressEvent(input);
+        // Draw map from the top left of the window
+        drawScene(input,money,waveCount,getTimescale(),getGameStatus(),livesLeft);
         // Check if it is time to spawn a new slicer (and we have some left to spawn)
         if (waveStarted && frameCount / FPS >= spawnDelay) {
             if(!spawnEventGoing){

@@ -4,6 +4,8 @@ import bagel.DrawOptions;
 import bagel.Font;
 import bagel.Image;
 import bagel.util.Colour;
+import bagel.util.Point;
+import bagel.util.Rectangle;
 
 public class BuyPanel {
     private static final String BACKGROUND_IMAGE = "res/images/buypanel.png";
@@ -32,6 +34,22 @@ public class BuyPanel {
         drawAirSupport(currentMoney);
         drawKeyBindings();
         drawCurrentMoney(currentMoney);
+    }
+
+    public boolean isInsideBuyPanel(Point p){
+        return background.getBoundingBox().intersects(p);
+    }
+
+    public boolean clickedOnTank(Point p){
+        return tank.getBoundingBoxAt(new Point(35.0,90.0)).intersects(p);
+    }
+
+    public boolean clickedOnSuperTank(Point p){
+        return superTank.getBoundingBoxAt(new Point(155.0,90.0)).intersects(p);
+    }
+
+    public boolean clickedOnAirSupport(Point p){
+        return airSupport.getBoundingBoxAt(new Point(275.0,90.0)).intersects(p);
     }
 
     private void drawBackground(){

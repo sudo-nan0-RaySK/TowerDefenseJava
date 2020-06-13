@@ -1,4 +1,7 @@
-c76da4e (HEAD -> master, origin/master) feat: Load level from wave file
+66cf2d3 (HEAD -> master, origin/master, origin/HEAD) fix: Made UI Functional
+95c4100 update: Shifted dev platform to macOS
+8763773 feat: Completed a non functional UI/Placeholders
+c76da4e feat: Load level from wave file
 28aabc7 update: Read waves from file
 c5e619d clean: Code cleanups and modularizations from game loop
 3ebf65e feat: Added reader/parser for handling waves.txt
