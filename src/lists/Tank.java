@@ -37,21 +37,27 @@ public class Tank extends Sprite {
         return coolDown;
     }
 
-    public void seekTargets(List<List<? extends Slicer>> sliceLists){
+    public void seekTargets(List<List<? extends Slicer>> slicerLists){
         List<Slicer> slicersInRange = new ArrayList<>();
-        for(List<? extends Slicer> slicerList : sliceLists){
+        for(List<? extends Slicer> slicerList : slicerLists){
             for(Slicer s : slicerList){
                 if(isInRange(s.getCenter())){
                     slicersInRange.add(s);
                 }
             }
         }
+        if(slicersInRange.isEmpty()){
+            return;
+        }
         int randomIndex = new Random().nextInt(slicersInRange.size());
         lockedTarget = slicersInRange.get(randomIndex);
+        System.out.println(lockedTarget);
     }
 
-    @Override
-    public void update(Input input){
+    public void update(Input input,List<List<? extends Slicer>> slicerLists){
+        if(lockedTarget==null || !isInRange(lockedTarget.getCenter())){
+            seekTargets(slicerLists);
+        }
         super.update(input);
     }
 }

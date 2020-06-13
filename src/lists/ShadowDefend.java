@@ -136,8 +136,10 @@ public class ShadowDefend extends AbstractGame {
     }
 
     private void updateTankList(List<Tank> tanks, Input input){
+        List<List<? extends  Slicer>> slicersList
+                = Arrays.asList(slicers, superSlicers, megaSlicers, apexSlicers);
         for(Tank tank : tanks){
-            tank.update(input);
+            tank.update(input,slicersList);
         }
     }
 
