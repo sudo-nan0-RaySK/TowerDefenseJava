@@ -12,6 +12,7 @@ public class SuperSlicer extends Slicer {
     private static final double SPEED = 3.0/4.0;
     private static final int REWARD = 15;
     private static final int PENALTY = 2;
+    private static final int HEALTH = 1;
     private int currentHealth;
     /**
      * Creates a new Sprite (game entity)
@@ -20,26 +21,22 @@ public class SuperSlicer extends Slicer {
      */
 
     public SuperSlicer(List<Point> polyLine){
-        super(polyLine,IMAGE_FILE,SPEED,PENALTY);
+        super(polyLine,IMAGE_FILE,SPEED,PENALTY,HEALTH,REWARD);
         this.currentHealth = 1;
     }
 
     public SuperSlicer(int targetPoint,List<Point> polyLine){
-        super(targetPoint,polyLine,IMAGE_FILE,SPEED,PENALTY);
+        super(targetPoint,polyLine,IMAGE_FILE,SPEED,PENALTY,HEALTH,REWARD);
         this.currentHealth = 1;
     }
 
     public void checkHitByTankProjectile(){
         for(TankProjectile projectile : ShadowDefend.getTankProjectiles()) {
             if (this.getRect().intersects(projectile.getCenter())) {
-                this.currentHealth -= projectile.getDamage();
+                this.inflictDamage(projectile.getDamage());
                 projectile.setFinished();
             }
         }
-    }
-
-    public boolean isDead(){
-        return this.currentHealth <= 0;
     }
 
     @Override

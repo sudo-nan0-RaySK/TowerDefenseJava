@@ -16,32 +16,56 @@ public class Slicer extends Sprite {
     private boolean finished;
     private boolean reachedEnd;
     private int penalty;
+    private int health;
+    private boolean dead;
+    private int reward;
     /**
      * Creates a new Slicer
      *
      * @param polyline The polyline that the slicer must traverse (must have at least 1 point)
      */
-    public Slicer(List<Point> polyline,String imageFile, double speed, int penalty) {
+    public Slicer(List<Point> polyline,String imageFile,
+                  double speed, int penalty, int health, int reward) {
         super(polyline.get(0), imageFile);
         this.polyline = polyline;
         this.targetPointIndex = 1;
         this.finished = false;
         this.speed = speed;
+        this.health = health;
         this.reachedEnd = false;
         this.penalty = penalty;
+        this.dead = false;
+        this.reward = reward;
     }
 
     public Slicer(int targetrPointIndex, List<Point> polyline,
-                  String imageFile, double speed, int penalty) {
+                  String imageFile, double speed, int penalty, int health, int reward) {
         super(polyline.get(targetrPointIndex), imageFile);
         this.polyline = polyline;
         this.targetPointIndex = targetrPointIndex+2;
         this.finished = false;
         this.speed = speed;
+        this.health = health;
         this.reachedEnd = false;
         this.penalty = penalty;
+        this.dead = false;
+        this.reward = reward;
     }
 
+    public void inflictDamage(int damage){
+        health -= damage;
+        if (health<=0){
+            dead = true;
+        }
+    }
+
+    public boolean isDead(){
+        return dead;
+    }
+
+    public int getReward(){
+        return reward;
+    }
     /**
      * Updates the current state of the slicer. The slicer moves towards its next target point in
      * the polyline at its specified movement rate.

@@ -43,6 +43,7 @@ public class ShadowDefend extends AbstractGame {
     private final List<SuperTank> superTanks;
     private final List<Airplane> airplanes;
     private static List<TankProjectile> tankProjectiles;
+    private static List<Explosive> explosives;
     private final WaveFileReader waveFileReader;
     private  Iterator<String[]> currentWaveEvent;
     private static int money;
@@ -71,7 +72,8 @@ public class ShadowDefend extends AbstractGame {
         this.superSlicers = new ArrayList<>();
         this.megaSlicers = new ArrayList<>();
         this.apexSlicers =  new ArrayList<>();
-        this.tankProjectiles =  new ArrayList<>();
+        tankProjectiles =  new ArrayList<>();
+        explosives = new ArrayList<>();
         this.tanks =  new ArrayList<>();
         this.superTanks =  new ArrayList<>();
         this.airplanes = new ArrayList<>();
@@ -115,6 +117,10 @@ public class ShadowDefend extends AbstractGame {
 
     public static List<TankProjectile> getTankProjectiles(){
         return tankProjectiles;
+    }
+
+    public static List<Explosive> getExplosives(){
+        return explosives;
     }
 
     /**

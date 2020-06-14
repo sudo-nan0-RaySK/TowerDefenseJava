@@ -13,6 +13,7 @@ public class ApexSlicer extends Slicer {
     private int currentHealth;
     private static final int  REWARD = 150;
     private static final int PENALTY = 16;
+    private static final int HEALTH = 25;
     /**
      * Creates a new Sprite (game entity)
      *
@@ -20,22 +21,19 @@ public class ApexSlicer extends Slicer {
      */
 
     public ApexSlicer(List<Point> polyLine){
-        super(polyLine,IMAGE_FILE,SPEED,PENALTY);
+        super(polyLine,IMAGE_FILE,SPEED,PENALTY,HEALTH,REWARD);
         this.currentHealth = 25;
     }
 
     public void checkHitByTankProjectile(){
         for(TankProjectile projectile : ShadowDefend.getTankProjectiles()) {
             if (this.getRect().intersects(projectile.getCenter())) {
-                this.currentHealth -= projectile.getDamage();
+                this.inflictDamage(projectile.getDamage());
                 projectile.setFinished();
             }
         }
     }
 
-    public boolean isDead(){
-        return this.currentHealth <= 0;
-    }
 
     @Override
     public void update(Input input){
