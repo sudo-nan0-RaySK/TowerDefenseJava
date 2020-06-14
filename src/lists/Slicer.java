@@ -14,7 +14,7 @@ public class Slicer extends Sprite {
     private final List<Point> polyline;
     private int targetPointIndex;
     private boolean finished;
-
+    private boolean reachedEnd;
     /**
      * Creates a new Slicer
      *
@@ -26,6 +26,16 @@ public class Slicer extends Sprite {
         this.targetPointIndex = 1;
         this.finished = false;
         this.speed = speed;
+        this.reachedEnd = false;
+    }
+
+    public Slicer(int targetrPointIndex, List<Point> polyline,String imageFile, double speed) {
+        super(polyline.get(targetrPointIndex), imageFile);
+        this.polyline = polyline;
+        this.targetPointIndex = targetrPointIndex+2;
+        this.finished = false;
+        this.speed = speed;
+        this.reachedEnd = false;
     }
 
     /**
@@ -51,6 +61,7 @@ public class Slicer extends Sprite {
             // Check if we have reached the end
             if (targetPointIndex == polyline.size() - 1) {
                 finished = true;
+                reachedEnd = true;
                 return;
             } else {
                 // Make our focus the next point in the polyline
@@ -72,5 +83,13 @@ public class Slicer extends Sprite {
 
     public void setFinished(boolean val){
         this.finished = val;
+    }
+
+    public boolean didReachedEnd(){
+        return reachedEnd;
+    }
+
+    public int getTargetPointIndex(){
+        return targetPointIndex;
     }
 }

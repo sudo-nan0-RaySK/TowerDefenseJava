@@ -35,6 +35,8 @@ public class TankProjectile extends Sprite {
         return finished;
     }
 
+    public void setFinished(){ finished=true; }
+
     public int getDamage(){
         return DAMAGE;
     }

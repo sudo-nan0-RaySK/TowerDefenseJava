@@ -24,10 +24,16 @@ public class RegularSlicer extends Slicer {
         this.currentHealth = 1;
     }
 
+    public RegularSlicer(int targetPoint,List<Point> polyLine){
+        super(targetPoint,polyLine,IMAGE_FILE,SPEED);
+        this.currentHealth = 1;
+    }
+
     public void checkHitByTankProjectile(){
         for(TankProjectile projectile : ShadowDefend.getTankProjectiles()) {
-            if (this.getRect().intersects(projectile.getRect())) {
+            if (this.getRect().intersects(projectile.getCenter())) {
                 this.currentHealth -= projectile.getDamage();
+                projectile.setFinished();
             }
         }
     }

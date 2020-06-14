@@ -145,6 +145,15 @@ public class ShadowDefend extends AbstractGame {
             s.update(input);
             if (s.isFinished()) {
                 slicerList.remove(i);
+                if(s.didReachedEnd()){
+                    continue;
+                }
+                if(s instanceof SuperSlicer){
+                    slicers.add(
+                            new RegularSlicer(s.getTargetPointIndex(),polyline));
+                    slicers.add(
+                            new RegularSlicer(s.getTargetPointIndex(),polyline));
+                }
             }
         }
     }
@@ -162,7 +171,6 @@ public class ShadowDefend extends AbstractGame {
             TankProjectile projectile = ShadowDefend.getTankProjectiles().get(i);
             projectile.update(input);
             if(projectile.isFinished()){
-                System.out.println("Deleted Projectile");
                 ShadowDefend.getTankProjectiles().remove(projectile);
             }
         }
