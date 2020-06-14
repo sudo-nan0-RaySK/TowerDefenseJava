@@ -6,22 +6,22 @@ import bagel.util.Vector2;
 
 public class TankProjectile extends Sprite {
 
-    private static final String TANK_PROJECTILE_IMAGE = "res/images/tank_projectile.png";
-    private static final int DAMAGE = 1;
+    private final int damage;
     private boolean finished;
     private final Point source;
     private final Point target;
     private final double effectRadius;
     private final double speed;
 
-    public TankProjectile(Point source, Point target,
-                          double effectRadius, double speed){
+    public TankProjectile(String TANK_PROJECTILE_IMAGE, Point source, Point target,
+                          double effectRadius, double speed, int damage){
         super(source,TANK_PROJECTILE_IMAGE);
         this.finished = false;
         this.source = source;
         this.target = target;
         this.effectRadius = effectRadius;
         this.speed = speed;
+        this.damage = damage;
     }
 
     private boolean isOutOfRange(){
@@ -38,7 +38,7 @@ public class TankProjectile extends Sprite {
     public void setFinished(){ finished=true; }
 
     public int getDamage(){
-        return DAMAGE;
+        return damage;
     }
 
     @Override

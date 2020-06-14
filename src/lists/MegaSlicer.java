@@ -39,7 +39,7 @@ public class MegaSlicer extends Slicer {
     }
 
     public boolean isDead(){
-        return this.currentHealth == 0;
+        return this.currentHealth <= 0;
     }
 
     @Override

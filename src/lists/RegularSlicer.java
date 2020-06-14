@@ -40,7 +40,7 @@ public class RegularSlicer extends Slicer {
     }
 
     public boolean isDead(){
-        return this.currentHealth == 0;
+        return this.currentHealth <= 0;
     }
 
     @Override

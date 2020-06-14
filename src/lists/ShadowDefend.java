@@ -40,6 +40,7 @@ public class ShadowDefend extends AbstractGame {
     private final List<MegaSlicer> megaSlicers;
     private final List<ApexSlicer> apexSlicers;
     private final List<Tank> tanks;
+    private final List<SuperTank> superTanks;
     private static List<TankProjectile> tankProjectiles;
     private final WaveFileReader waveFileReader;
     private  Iterator<String[]> currentWaveEvent;
@@ -71,6 +72,7 @@ public class ShadowDefend extends AbstractGame {
         this.apexSlicers =  new ArrayList<>();
         this.tankProjectiles =  new ArrayList<>();
         this.tanks =  new ArrayList<>();
+        this.superTanks =  new ArrayList<>();
         this.waveFileReader = new WaveFileReader();
         this.waveStarted = false;
         this.waveGoing = false;
@@ -178,6 +180,14 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    private void updateSuperTankList(List<SuperTank> superTanks, Input input){
+        List<List<? extends  Slicer>> slicersList
+                = Arrays.asList(slicers, superSlicers, megaSlicers, apexSlicers);
+        for(SuperTank superTank : superTanks){
+            superTank.update(input,slicersList);
+        }
+    }
+
     private void updateTankProjectiles(Input input){
         for(int i = ShadowDefend.getTankProjectiles().size()-1; i>=0; --i){
             TankProjectile projectile = ShadowDefend.getTankProjectiles().get(i);
@@ -209,8 +219,10 @@ public class ShadowDefend extends AbstractGame {
                             money -= buyPanel.getTankPrice();
                             placing = false;
                             break;
-                        case "Super":
-                            // TODO: SuperTank placement
+                        case "SuperTank":
+                            superTanks.add(new SuperTank(input.getMousePosition()));
+                            money -= buyPanel.getSuperTankPrice();
+                            placing = false;
                             break;
                         default:
                             // TODO: AirSupport placement
@@ -248,6 +260,7 @@ public class ShadowDefend extends AbstractGame {
 
     void updateTowers(Input input){
         updateTankList(tanks,input);
+        updateSuperTankList(superTanks,input);
     }
 
     void updateSprites(Input input){
