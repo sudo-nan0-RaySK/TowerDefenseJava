@@ -51,8 +51,13 @@ public class Airplane extends Sprite {
                 this.setPosition(new Point(pos.x,Y_END+1));
             }
         }
+        if(direction==VERTICAL){
+            super.setAngle(0.0);
+        } else {
+            super.setAngle(-(Math.PI/2));
+        }
+
         super.move(displacement.normalised().mul(SPEED * ShadowDefend.getTimescale()));
-        super.setAngle(Math.atan2(target.y-current.y,target.x-current.y));
         super.update(input);
     }
 
