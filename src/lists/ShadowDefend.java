@@ -148,6 +148,7 @@ public class ShadowDefend extends AbstractGame {
             if (s.isFinished()) {
                 slicerList.remove(i);
                 if(s.didReachedEnd()){
+                    livesLeft -= s.getPenalty();
                     continue;
                 }
                 else if(s instanceof SuperSlicer){
@@ -387,7 +388,7 @@ public class ShadowDefend extends AbstractGame {
             }
         }
         // Close game if all slicers have finished traversing the polyline and all waves have finished
-        if (!waveFileReader.hasNext() && !waveGoing && allSlicerListAreEmpty()) {
+        if ((!waveFileReader.hasNext() && !waveGoing && allSlicerListAreEmpty() ) || livesLeft<=0) {
             Window.close();
         }
         // Update all sprites, and remove them if they've finished
