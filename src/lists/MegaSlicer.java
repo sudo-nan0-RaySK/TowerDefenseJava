@@ -20,12 +20,12 @@ public class MegaSlicer extends Slicer {
      */
 
     public MegaSlicer(List<Point> polyLine){
-        super(polyLine,IMAGE_FILE,SPEED);
+        super(polyLine,IMAGE_FILE,SPEED,PENALTY);
         this.currentHealth = 2;
     }
 
     public MegaSlicer(int targetPoint,List<Point> polyLine){
-        super(targetPoint,polyLine,IMAGE_FILE,SPEED);
+        super(targetPoint,polyLine,IMAGE_FILE,SPEED,PENALTY);
         this.currentHealth = 1;
     }
 

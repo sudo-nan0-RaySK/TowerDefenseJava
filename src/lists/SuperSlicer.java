@@ -20,12 +20,12 @@ public class SuperSlicer extends Slicer {
      */
 
     public SuperSlicer(List<Point> polyLine){
-        super(polyLine,IMAGE_FILE,SPEED);
+        super(polyLine,IMAGE_FILE,SPEED,PENALTY);
         this.currentHealth = 1;
     }
 
     public SuperSlicer(int targetPoint,List<Point> polyLine){
-        super(targetPoint,polyLine,IMAGE_FILE,SPEED);
+        super(targetPoint,polyLine,IMAGE_FILE,SPEED,PENALTY);
         this.currentHealth = 1;
     }
 

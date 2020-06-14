@@ -20,7 +20,7 @@ public class ApexSlicer extends Slicer {
      */
 
     public ApexSlicer(List<Point> polyLine){
-        super(polyLine,IMAGE_FILE,SPEED);
+        super(polyLine,IMAGE_FILE,SPEED,PENALTY);
         this.currentHealth = 25;
     }
 

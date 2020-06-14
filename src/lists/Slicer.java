@@ -15,27 +15,31 @@ public class Slicer extends Sprite {
     private int targetPointIndex;
     private boolean finished;
     private boolean reachedEnd;
+    private int penalty;
     /**
      * Creates a new Slicer
      *
      * @param polyline The polyline that the slicer must traverse (must have at least 1 point)
      */
-    public Slicer(List<Point> polyline,String imageFile, double speed) {
+    public Slicer(List<Point> polyline,String imageFile, double speed, int penalty) {
         super(polyline.get(0), imageFile);
         this.polyline = polyline;
         this.targetPointIndex = 1;
         this.finished = false;
         this.speed = speed;
         this.reachedEnd = false;
+        this.penalty = penalty;
     }
 
-    public Slicer(int targetrPointIndex, List<Point> polyline,String imageFile, double speed) {
+    public Slicer(int targetrPointIndex, List<Point> polyline,
+                  String imageFile, double speed, int penalty) {
         super(polyline.get(targetrPointIndex), imageFile);
         this.polyline = polyline;
         this.targetPointIndex = targetrPointIndex+2;
         this.finished = false;
         this.speed = speed;
         this.reachedEnd = false;
+        this.penalty = penalty;
     }
 
     /**
@@ -91,5 +95,9 @@ public class Slicer extends Sprite {
 
     public int getTargetPointIndex(){
         return targetPointIndex;
+    }
+
+    public int getPenalty(){
+        return penalty;
     }
 }
