@@ -56,7 +56,7 @@ public class ShadowDefend extends AbstractGame {
     private int spawnEventCounter;
     private String slicerToSpawn;
     private String towerSelected;
-    private int waveFlag = 0;
+    public static int DIRECTION;
 
     /**
      * Creates a new instance of the ShadowDefend game
@@ -80,6 +80,7 @@ public class ShadowDefend extends AbstractGame {
         this.waveGoing = false;
         this.spawnEventGoing = false;
         this.placing = false;
+        DIRECTION = 0;
         // Award $500 to player at the start of the game
         this.money = 500;
         // Award 25 lives at start
@@ -237,6 +238,7 @@ public class ShadowDefend extends AbstractGame {
                             airplanes.add((new Airplane(input.getMousePosition())));
                             money -= buyPanel.getSuperTankPrice();
                             placing = false;
+                            DIRECTION ^= 1;
                             break;
                     }
                 }

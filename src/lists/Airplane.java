@@ -18,22 +18,30 @@ public class Airplane extends Sprite {
     private static final int VERTICAL = 1;
     private static final int HORIZONTAL = 0;
     private int direction;
-    private boolean onScreen;
+    private boolean finished;
     private Point pos;
 
     public Airplane(Point p){
         super(new Point(p.x,Y_END+1),AIRPLANE_IMAGE);
-        this.onScreen = false;
-        this.direction = VERTICAL;
+        this.finished = false;
+        this.direction = ShadowDefend.DIRECTION;
         this.pos = p;
+        if(direction==HORIZONTAL){
+            this.setPosition(new Point(X_END+1,pos.y));
+        } else {
+            this.setPosition(new Point(pos.x,Y_END+1));
+        }
     }
 
-    public boolean isOnScreen(){
-        return onScreen;
+    public boolean isFinished(){
+        return finished;
     }
 
     @Override
     public void update(Input input){
+        if(isFinished()){
+            return;
+        }
         Point current = this.getCenter();
         Point target = direction==VERTICAL?
                 new Point(current.x,current.y-1):new Point(current.x-1,current.y);
@@ -43,13 +51,7 @@ public class Airplane extends Sprite {
         Vector2 displacement = targetVec.sub(currVec);
 
         if(current.x<=X_START || current.y<=Y_START){
-            if(direction==VERTICAL){
-                direction=HORIZONTAL;
-                this.setPosition(new Point(X_END+1,pos.y));
-            } else {
-                direction=VERTICAL;
-                this.setPosition(new Point(pos.x,Y_END+1));
-            }
+            finished = true;
         }
         if(direction==VERTICAL){
             super.setAngle(0.0);
