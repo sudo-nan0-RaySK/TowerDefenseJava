@@ -1,4 +1,12 @@
-53a0d8e (HEAD -> master, origin/master) feat: Added target locking mechanism
+ef2b89e (HEAD -> master, origin/master, origin/HEAD) clean: Minor houskeeping
+dfbac51 feat: TankProjectile physics finished
+abbe776 fix: Imporved game physics in general
+03bd3ca feat: Projectile physics completed for tanks and RegularSlicer
+de98731 fix: Typos fixed
+da5c219 feat: Projectile fire logic completed
+54dd99f feat: Tower rotation and aim logic completed
+f4fdbce feat: Projectile physics initiated
+53a0d8e feat: Added target locking mechanism
 12ec81e feat: Tower deployment initials completed
 a9d36e1 fix: Render TimeScale green if > 1.0
 adff0d2 fix: Drag and place edge cases fixed
