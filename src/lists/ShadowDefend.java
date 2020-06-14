@@ -214,6 +214,18 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    private void updateExplosives(Input input){
+        List<List<? extends  Slicer>> slicersList
+                = Arrays.asList(slicers, superSlicers, megaSlicers, apexSlicers);
+        for(int i = ShadowDefend.getExplosives().size()-1; i>=0; --i){
+            Explosive explosive = ShadowDefend.getExplosives().get(i);
+            explosive.update(input,slicersList);
+            if(explosive.isDetonated()){
+                ShadowDefend.getExplosives().remove(i);
+            }
+        }
+    }
+
     private void handleKeyPressEvent(Input input){
         // Handle key presses
         if (input.wasPressed(Keys.S)) {
@@ -287,6 +299,7 @@ public class ShadowDefend extends AbstractGame {
         updateSlicers(input);
         updateTowers(input);
         updateTankProjectiles(input);
+        updateExplosives(input);
     }
 
     boolean allSlicerListAreEmpty(){

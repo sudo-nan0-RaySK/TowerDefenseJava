@@ -20,12 +20,16 @@ public class Airplane extends Sprite {
     private int direction;
     private boolean finished;
     private Point pos;
+    private long dropDelay;
+    private long lastDrop;
 
     public Airplane(Point p){
         super(new Point(p.x,Y_END+1),AIRPLANE_IMAGE);
         this.finished = false;
         this.direction = ShadowDefend.DIRECTION;
         this.pos = p;
+        this.dropDelay =  new Random().nextInt(3000);
+        this.lastDrop = 0;
         if(direction==HORIZONTAL){
             this.setPosition(new Point(X_END+1,pos.y));
         } else {
@@ -43,9 +47,16 @@ public class Airplane extends Sprite {
             return;
         }
         Point current = this.getCenter();
+        if(current.x<X_END && current.y<Y_END && current.x>X_START && current.y>Y_START){
+            long currTime = System.currentTimeMillis();
+            if(currTime-lastDrop>dropDelay){
+                ShadowDefend.getExplosives().add(new Explosive(current));
+                lastDrop = currTime;
+                dropDelay = new Random().nextInt(3000);
+            }
+        }
         Point target = direction==VERTICAL?
                 new Point(current.x,current.y-1):new Point(current.x-1,current.y);
-        //System.out.println("Plane position: "+current.x+" "+current.y);
         Vector2 currVec = current.asVector();
         Vector2 targetVec = target.asVector();
         Vector2 displacement = targetVec.sub(currVec);
