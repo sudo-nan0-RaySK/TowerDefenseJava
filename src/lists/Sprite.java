@@ -13,7 +13,7 @@ import bagel.util.Vector2;
 public abstract class Sprite {
 
     private final Image image;
-    private final Rectangle rect;
+    private Rectangle rect;
     private double angle;
 
     /**
@@ -33,6 +33,9 @@ public abstract class Sprite {
         return new Rectangle(rect);
     }
 
+    public void setPosition(Point p){
+        this.rect = image.getBoundingBoxAt(p);
+    }
     /**
      * Moves the Sprite by a specified delta
      *

@@ -41,6 +41,7 @@ public class ShadowDefend extends AbstractGame {
     private final List<ApexSlicer> apexSlicers;
     private final List<Tank> tanks;
     private final List<SuperTank> superTanks;
+    private final List<Airplane> airplanes;
     private static List<TankProjectile> tankProjectiles;
     private final WaveFileReader waveFileReader;
     private  Iterator<String[]> currentWaveEvent;
@@ -73,6 +74,7 @@ public class ShadowDefend extends AbstractGame {
         this.tankProjectiles =  new ArrayList<>();
         this.tanks =  new ArrayList<>();
         this.superTanks =  new ArrayList<>();
+        this.airplanes = new ArrayList<>();
         this.waveFileReader = new WaveFileReader();
         this.waveStarted = false;
         this.waveGoing = false;
@@ -189,6 +191,12 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    private void updateAirplanesList(List<Airplane> airplanes,Input input){
+        for(Airplane airplane : airplanes){
+            airplane.update(input);
+        }
+    }
+
     private void updateTankProjectiles(Input input){
         for(int i = ShadowDefend.getTankProjectiles().size()-1; i>=0; --i){
             TankProjectile projectile = ShadowDefend.getTankProjectiles().get(i);
@@ -226,7 +234,9 @@ public class ShadowDefend extends AbstractGame {
                             placing = false;
                             break;
                         default:
-                            // TODO: AirSupport placement
+                            airplanes.add((new Airplane(input.getMousePosition())));
+                            money -= buyPanel.getSuperTankPrice();
+                            placing = false;
                             break;
                     }
                 }
@@ -262,6 +272,7 @@ public class ShadowDefend extends AbstractGame {
     void updateTowers(Input input){
         updateTankList(tanks,input);
         updateSuperTankList(superTanks,input);
+        updateAirplanesList(airplanes,input);
     }
 
     void updateSprites(Input input){
