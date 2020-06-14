@@ -14,22 +14,35 @@ public class Explosive extends Sprite {
     private long spawnTime;
     private boolean detonated;
 
+    /**
+     *
+     * @param p Point to drop explosive on
+     */
     public Explosive(Point p){
         super(p,EXPLOSIVE_IMAGE);
         this.spawnTime = System.currentTimeMillis();
         this.detonated = false;
     }
 
+    /**
+     *
+     * @return if explosive has been detonated
+     */
     public boolean isDetonated() {
         return detonated;
     }
 
+    /**
+     * Check if explosive has detonated
+     */
     public void setDetonated() {
         detonated = true;
     }
 
     /** Equation for the circle
      *  (x-x')^2 + (y-y')^2 <= r^2
+     * @param p Point to check
+     * @return if point is in range
      */
     private boolean isInRange(Point p){
         Point spriteCenter = this.getCenter();
@@ -38,6 +51,10 @@ public class Explosive extends Sprite {
                 <= Math.pow(EFFECT_RADIUS,2.0);
     }
 
+    /**
+     * Detonate the explosive
+     * @param slicerLists List of slicers
+     */
     private void detonate(List<List<? extends Slicer>> slicerLists){
         List<Slicer> slicersInRange = new ArrayList<>();
         for(List<? extends Slicer> slicerList : slicerLists){
@@ -59,6 +76,10 @@ public class Explosive extends Sprite {
         }
     }
 
+    /**
+     * @param input User input
+     * @param slicerLists List of slicers
+     */
     public void update(Input input, List<List<? extends Slicer>> slicerLists){
         if(isDetonated()){
             return;

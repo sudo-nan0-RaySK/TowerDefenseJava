@@ -13,6 +13,10 @@ public class WaveFileReader {
     public boolean reachedEnd = false;
     public int iterator = 1;
 
+    /**
+     * Reads wave data from waves.txt
+     * @throws Exception IOException
+     */
     public WaveFileReader()throws  Exception{
         this.waveMap = new HashMap<Integer, ArrayList<String>>();
         File file  = new File(levelsFile);
@@ -28,6 +32,10 @@ public class WaveFileReader {
         }
     }
 
+    /**
+     * Get next waves data
+     * @return Next wave's data
+     */
     public ArrayList<String[]> next(){
         ArrayList<String[]> ret = new ArrayList<>();
         for(String dataLine : waveMap.get(iterator)){
@@ -40,6 +48,9 @@ public class WaveFileReader {
         return ret;
     }
 
+    /**
+     * @return if more waves are left
+     */
     public boolean hasNext(){
         return !reachedEnd;
     }

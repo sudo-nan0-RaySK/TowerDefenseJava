@@ -14,22 +14,29 @@ public class MegaSlicer extends Slicer {
     private static final int PENALTY = 4;
     private static final int HEALTH = 2;
     private int currentHealth;
+
     /**
      * Creates a new Sprite (game entity)
-     *
-     * @param polyLine    The list of points on polyLine
+     * @param polyLine The list of points on polyLine
      */
-
     public MegaSlicer(List<Point> polyLine){
         super(polyLine,IMAGE_FILE,SPEED,PENALTY,HEALTH,REWARD);
         this.currentHealth = 2;
     }
 
+    /**
+     *
+     * @param targetPoint Target point
+     * @param polyLine The list of points on polyLine
+     */
     public MegaSlicer(int targetPoint,List<Point> polyLine){
         super(targetPoint,polyLine,IMAGE_FILE,SPEED,PENALTY,HEALTH,REWARD);
         this.currentHealth = 1;
     }
 
+    /**
+     * Check if slicer was attacked with projectile
+     */
     public void checkHitByTankProjectile(){
         for(TankProjectile projectile : ShadowDefend.getTankProjectiles()) {
             if (this.getRect().intersects(projectile.getCenter())) {
@@ -39,6 +46,10 @@ public class MegaSlicer extends Slicer {
         }
     }
 
+    /**
+     *
+     * @param input User input
+     */
     @Override
     public void update(Input input){
         if(this.isFinished()){
@@ -53,6 +64,10 @@ public class MegaSlicer extends Slicer {
         super.update(input);
     }
 
+    /**
+     *
+     * @return Penalty associated with slicer
+     */
     public int getPenalty(){
         return PENALTY;
     }

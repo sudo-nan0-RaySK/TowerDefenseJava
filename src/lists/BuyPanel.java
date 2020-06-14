@@ -27,6 +27,10 @@ public class BuyPanel {
         this.airSupport = new Image(AIR_SUPPORT);
     }
 
+    /**
+     * Draws buyPanel
+     * @param currentMoney Player's current in game money
+     */
     public void draw(int currentMoney){
         drawBackground();
         drawTank(currentMoney);
@@ -36,27 +40,53 @@ public class BuyPanel {
         drawCurrentMoney(currentMoney);
     }
 
+    /**
+     *
+     * @param p Point to be checked
+     * @return if point is inside buyPanel or not
+     */
     public boolean isInsideBuyPanel(Point p){
         return background.getBoundingBox().intersects(p);
     }
 
+    /**
+     *
+     * @param p Point to be checked
+     * @return if tank was clicked
+     */
     public boolean clickedOnTank(Point p){
         return tank.getBoundingBoxAt(new Point(35.0,90.0)).intersects(p);
     }
 
+    /**
+     *
+     * @param p Point to be checked
+     * @return if superTank was clicked
+     */
     public boolean clickedOnSuperTank(Point p){
-
         return superTank.getBoundingBoxAt(new Point(155.0,90.0)).intersects(p);
     }
 
+    /**
+     *
+     * @param p Point to be checked
+     * @return if airSupport was clicked
+     */
     public boolean clickedOnAirSupport(Point p){
         return airSupport.getBoundingBoxAt(new Point(275.0,90.0)).intersects(p);
     }
 
+    /**
+     * Draw background for buyPanel
+     */
     private void drawBackground(){
         background.draw(0.0,0.0,new DrawOptions().setScale(2.0,2.0));
     }
 
+    /**
+     * Render tank image on buyPanel
+     * @param currentMoney Player's current in game money
+     */
     private void drawTank(int currentMoney){
         Colour textColor = currentMoney>=250?Colour.GREEN:Colour.RED;
         tank.draw(64.0,45.0);
@@ -64,6 +94,10 @@ public class BuyPanel {
                 new DrawOptions().setBlendColour(textColor));
     }
 
+    /**
+     * Render superTank image on buyPanel
+     * @param currentMoney Player's current in game money
+     */
     private void drawSuperTank(int currentMoney){
         Colour textColor = currentMoney>=600?Colour.GREEN:Colour.RED;
         superTank.draw(184.0,45.0);
@@ -71,6 +105,10 @@ public class BuyPanel {
                 new DrawOptions().setBlendColour(textColor));
     }
 
+    /**
+     * Render airSupport image on buyPanel
+     * @param currentMoney Player's current in game money
+     */
     private void drawAirSupport(int currentMoney){
         Colour textColor = currentMoney>=500?Colour.GREEN:Colour.RED;
         airSupport.draw(304.0,45.0);
@@ -78,6 +116,9 @@ public class BuyPanel {
                 new DrawOptions().setBlendColour(textColor));
     }
 
+    /**
+     * Render key bindings
+     */
     private void drawKeyBindings(){
         String data = "Key Bindings: \n\n"
                 + "S - Start Wave \n"
@@ -87,13 +128,22 @@ public class BuyPanel {
                 .drawString(data,445.0,25.0,
                         new DrawOptions().setBlendColour(Colour.WHITE));
     }
-
+    /**
+     * Render currentMoney
+     * @param currentMoney Player's current in game money
+     */
     private void drawCurrentMoney(int currentMoney){
         new Font(DEJA_VU_SANS_BOLD,50)
                 .drawString("$"+currentMoney,750,70,
                 new DrawOptions().setBlendColour(Colour.WHITE));
     }
 
+    /**
+     * Check if tower is purchasable
+     * @param towerType Tower to be purchased
+     * @param money currentMoney
+     * @return if tower is purchasable
+     */
     public boolean isPurchasable(String towerType, int money){
         if(towerType.equals("Tank")){
             return money>=getTankPrice();
@@ -106,14 +156,26 @@ public class BuyPanel {
         }
     }
 
+    /**
+     *
+     * @return price of tank
+     */
     public int getTankPrice(){
         return 250;
     }
 
+    /**
+     *
+     * @return price of superTank
+     */
     public int getSuperTankPrice(){
         return 600;
     }
 
+    /**
+     *
+     * @return price of airSupport
+     */
     public int getAirSupportPrice(){
         return 500;
     }

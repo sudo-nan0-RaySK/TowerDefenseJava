@@ -13,6 +13,15 @@ public class TankProjectile extends Sprite {
     private final double effectRadius;
     private final double speed;
 
+    /**
+     *
+     * @param TANK_PROJECTILE_IMAGE Image for tank projectile
+     * @param source Center of launcher tank
+     * @param target Locked target's center
+     * @param effectRadius Reach of projectile
+     * @param speed Speed of projectile
+     * @param damage Damage inflict able
+     */
     public TankProjectile(String TANK_PROJECTILE_IMAGE, Point source, Point target,
                           double effectRadius, double speed, int damage){
         super(source,TANK_PROJECTILE_IMAGE);
@@ -24,6 +33,10 @@ public class TankProjectile extends Sprite {
         this.damage = damage;
     }
 
+    /**
+     *
+     * @return If projectile went out of range
+     */
     private boolean isOutOfRange(){
         Point spriteCenter = this.getCenter();
         return (Math.pow(spriteCenter.x-source.x,2.0))
@@ -31,16 +44,29 @@ public class TankProjectile extends Sprite {
                 >= Math.pow(effectRadius,2.0);
     }
 
+    /**
+     * @return If projectile is exhausted
+     */
     public boolean isFinished(){
         return finished;
     }
 
+    /**
+     * Set projectile to be marked finished
+     */
     public void setFinished(){ finished=true; }
 
+    /**
+     * @return Damage inflict able
+     */
     public int getDamage(){
         return damage;
     }
 
+    /**
+     * Update sprite
+     * @param input User input
+     */
     @Override
     public void update(Input input){
         if(isFinished()){

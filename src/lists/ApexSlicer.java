@@ -25,6 +25,9 @@ public class ApexSlicer extends Slicer {
         this.currentHealth = 25;
     }
 
+    /**
+     * Check if slicer was attacked by a TankProjectile
+     */
     public void checkHitByTankProjectile(){
         for(TankProjectile projectile : ShadowDefend.getTankProjectiles()) {
             if (this.getRect().intersects(projectile.getCenter())) {
@@ -34,7 +37,10 @@ public class ApexSlicer extends Slicer {
         }
     }
 
-
+    /**
+     *
+     * @param input User input
+     */
     @Override
     public void update(Input input){
         if(this.isFinished()){
@@ -49,6 +55,10 @@ public class ApexSlicer extends Slicer {
         super.update(input);
     }
 
+    /**
+     *
+     * @return Penalty associated with Slicer
+     */
     public int getPenalty(){
         return PENALTY;
     }

@@ -38,6 +38,16 @@ public class Slicer extends Sprite {
         this.reward = reward;
     }
 
+    /**
+     *
+     * @param targetrPointIndex Next target on polyLine
+     * @param polyline The polyline that the slicer must traverse (must have at least 1 point)
+     * @param imageFile Slicer's image file
+     * @param speed Slicer's speed
+     * @param penalty Penalty associated with slicer
+     * @param health Slicer's initial health
+     * @param reward Reward associated with slicer
+     */
     public Slicer(int targetrPointIndex, List<Point> polyline,
                   String imageFile, double speed, int penalty, int health, int reward) {
         super(polyline.get(targetrPointIndex), imageFile);
@@ -52,6 +62,10 @@ public class Slicer extends Sprite {
         this.reward = reward;
     }
 
+    /**
+     *
+     * @param damage Damage to be inflicted
+     */
     public void inflictDamage(int damage){
         health -= damage;
         if (health<=0){
@@ -59,13 +73,22 @@ public class Slicer extends Sprite {
         }
     }
 
+    /**
+     *
+     * @return If slicer is dead
+     */
     public boolean isDead(){
         return dead;
     }
 
+    /**
+     *
+     * @return Reward associated with Slicer
+     */
     public int getReward(){
         return reward;
     }
+
     /**
      * Updates the current state of the slicer. The slicer moves towards its next target point in
      * the polyline at its specified movement rate.
@@ -105,22 +128,42 @@ public class Slicer extends Sprite {
         super.update(input);
     }
 
+    /**
+     *
+     * @return if slicer is finished
+     */
     public boolean isFinished() {
         return finished;
     }
 
+    /**
+     *
+     * @param val set value for finish
+     */
     public void setFinished(boolean val){
         this.finished = val;
     }
 
+    /**
+     *
+     * @return If slicer reached end
+     */
     public boolean didReachedEnd(){
         return reachedEnd;
     }
 
+    /**
+     *
+     * @return Next target on polyLine
+     */
     public int getTargetPointIndex(){
         return targetPointIndex;
     }
 
+    /**
+     *
+     * @return Penalty associated with slicer
+     */
     public int getPenalty(){
         return penalty;
     }

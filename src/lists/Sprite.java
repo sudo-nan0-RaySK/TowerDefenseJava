@@ -28,11 +28,18 @@ public abstract class Sprite {
         this.angle = 0;
     }
 
-
+    /**
+     *
+     * @return BoundingBox for sprite
+     */
     public Rectangle getRect() {
         return new Rectangle(rect);
     }
 
+    /**
+     *
+     * @param p Change position of sprite to point p
+     */
     public void setPosition(Point p){
         this.rect = image.getBoundingBoxAt(p);
     }
@@ -45,10 +52,18 @@ public abstract class Sprite {
         rect.moveTo(rect.topLeft().asVector().add(dx).asPoint());
     }
 
+    /**
+     *
+     * @return Center of sprite
+     */
     public Point getCenter() {
         return getRect().centre();
     }
 
+    /**
+     *
+     * @param angle Set sprite's angle
+     */
     public void setAngle(double angle) {
         this.angle = angle;
     }

@@ -23,6 +23,10 @@ public class Airplane extends Sprite {
     private long dropDelay;
     private long lastDrop;
 
+    /**
+     *
+     * @param p Point where Airplane tower was placed
+     */
     public Airplane(Point p){
         super(new Point(p.x,Y_END+1),AIRPLANE_IMAGE);
         this.finished = false;
@@ -37,9 +41,18 @@ public class Airplane extends Sprite {
         }
     }
 
+    /**
+     *
+     * @return finished If airplane has traversed the map
+     */
     public boolean isFinished(){
         return finished;
     }
+
+    /**
+     *
+     * @param input User input
+     */
 
     @Override
     public void update(Input input){

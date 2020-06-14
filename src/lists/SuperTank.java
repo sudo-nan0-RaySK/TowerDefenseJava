@@ -19,6 +19,9 @@ public class SuperTank extends Sprite {
     private long lastFire;
     private Slicer lockedTarget;
 
+    /**
+     * @param p Point to spawn tank on
+     */
     public  SuperTank(Point p){
         super(p,TANK_IMAGE);
         this.lockedTarget = null;
@@ -27,6 +30,8 @@ public class SuperTank extends Sprite {
 
     /** Equation for the circle
      *  (x-x')^2 + (y-y')^2 <= r^2
+     * @param p Point to be checked
+     * @return If point lies in range
      */
     private boolean isInRange(Point p){
         Point spriteCenter = this.getCenter();
@@ -35,6 +40,10 @@ public class SuperTank extends Sprite {
                 <= Math.pow(EFFECT_RADIUS,2.0);
     }
 
+    /**
+     * Lock a target
+     * @param slicerLists List of all slicers
+     */
     public void seekTargets(List<List<? extends Slicer>> slicerLists){
         List<Slicer> slicersInRange = new ArrayList<>();
         for(List<? extends Slicer> slicerList : slicerLists){
@@ -51,6 +60,11 @@ public class SuperTank extends Sprite {
         lockedTarget = slicersInRange.get(randomIndex);
     }
 
+    /**
+     * Update tank
+     * @param input User input
+     * @param slicerLists List of all slicers
+     */
     public void update(Input input,List<List<? extends Slicer>> slicerLists){
         if(lockedTarget==null || lockedTarget.isFinished() || !isInRange(lockedTarget.getCenter())){
             seekTargets(slicerLists);

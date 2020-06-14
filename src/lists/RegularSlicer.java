@@ -26,11 +26,19 @@ public class RegularSlicer extends Slicer {
         this.currentHealth = 1;
     }
 
+    /**
+     *
+     * @param targetPoint Target point
+     * @param polyLine The list of points on polyLine
+     */
     public RegularSlicer(int targetPoint,List<Point> polyLine){
         super(targetPoint,polyLine,IMAGE_FILE,SPEED,PENALTY,HEALTH,REWARD);
         this.currentHealth = 1;
     }
 
+    /**
+     * Check if slicer was attacked with projectile
+     */
     public void checkHitByTankProjectile(){
         for(TankProjectile projectile : ShadowDefend.getTankProjectiles()) {
             if (this.getRect().intersects(projectile.getCenter())) {
@@ -41,6 +49,10 @@ public class RegularSlicer extends Slicer {
     }
 
 
+    /**
+     *
+     * @param input User input
+     */
     @Override
     public void update(Input input){
         if(this.isFinished()){
@@ -55,6 +67,10 @@ public class RegularSlicer extends Slicer {
         super.update(input);
     }
 
+    /**
+     *
+     * @return Penalty associated with slicer
+     */
     public int getPenalty(){
         return PENALTY;
     }
