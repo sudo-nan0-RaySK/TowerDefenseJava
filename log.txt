@@ -1,4 +1,12 @@
-ef2b89e (HEAD -> master, origin/master, origin/HEAD) clean: Minor houskeeping
+1389b9b (HEAD -> master, origin/master) feat: Air support finished
+722967e feat: Explosives added and minor cleanups
+72868b2 fix: Airplane spawn and direction logic
+6c32580 fix: Airplane direction fixed
+c381b18 feat: Airsupport basics laid
+0af96a9 feat: Tracking player lives
+82b1b47 feat: Completed SuperTank physics
+5540ebc update: Updated commit log
+ef2b89e clean: Minor houskeeping
 dfbac51 feat: TankProjectile physics finished
 abbe776 fix: Imporved game physics in general
 03bd3ca feat: Projectile physics completed for tanks and RegularSlicer
