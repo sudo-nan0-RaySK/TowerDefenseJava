@@ -148,11 +148,23 @@ public class ShadowDefend extends AbstractGame {
                 if(s.didReachedEnd()){
                     continue;
                 }
-                if(s instanceof SuperSlicer){
+                else if(s instanceof SuperSlicer){
                     slicers.add(
                             new RegularSlicer(s.getTargetPointIndex(),polyline));
                     slicers.add(
                             new RegularSlicer(s.getTargetPointIndex(),polyline));
+                }
+                else if(s instanceof MegaSlicer){
+                    superSlicers.add(
+                            new SuperSlicer(s.getTargetPointIndex(),polyline));
+                    superSlicers.add(
+                            new SuperSlicer(s.getTargetPointIndex(),polyline));
+                }
+                else if(s instanceof ApexSlicer){
+                    for(int k = 0; k<4; ++k){
+                        megaSlicers.add(
+                                new MegaSlicer(s.getTargetPointIndex(),polyline));
+                    }
                 }
             }
         }

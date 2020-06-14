@@ -11,6 +11,7 @@ public class SuperSlicer extends Slicer {
     private static final String IMAGE_FILE = "res/images/superslicer.png";
     private static final double SPEED = 3.0/4.0;
     private static final int REWARD = 15;
+    private static final int PENALTY = 2;
     private int currentHealth;
     /**
      * Creates a new Sprite (game entity)
@@ -20,6 +21,11 @@ public class SuperSlicer extends Slicer {
 
     public SuperSlicer(List<Point> polyLine){
         super(polyLine,IMAGE_FILE,SPEED);
+        this.currentHealth = 1;
+    }
+
+    public SuperSlicer(int targetPoint,List<Point> polyLine){
+        super(targetPoint,polyLine,IMAGE_FILE,SPEED);
         this.currentHealth = 1;
     }
 
@@ -48,5 +54,9 @@ public class SuperSlicer extends Slicer {
             return;
         }
         super.update(input);
+    }
+
+    public int getPenalty(){
+        return PENALTY;
     }
 }

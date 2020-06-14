@@ -3,6 +3,7 @@ package lists;
 import bagel.Input;
 import bagel.util.Point;
 import bagel.util.Vector2;
+import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,5 +55,9 @@ public class RegularSlicer extends Slicer {
             return;
         }
         super.update(input);
+    }
+
+    public int getPenalty(){
+        return PENALTY;
     }
 }
